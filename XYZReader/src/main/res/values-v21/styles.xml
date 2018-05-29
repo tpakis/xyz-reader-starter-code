@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
         <item name="android:windowContentTransitions">true</item>
-
-        <item name="android:windowEnterTransition">@transition/detail_transition_enter</item>
-        <item name="android:windowReturnTransition">@transition/detail_transition_exit</item>
-
-        <!--
-        <item name="android:windowExitTransition">@transition/detail_transition_enter</item>
-        -->
+        <item name="android:windowEnterTransition">@transition/transition_enter</item>
+        <item name="android:windowReturnTransition">@transition/transition_exit</item>
     </style>
 </resources>
