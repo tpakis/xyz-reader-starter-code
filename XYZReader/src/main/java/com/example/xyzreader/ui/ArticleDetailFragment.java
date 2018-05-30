@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -21,10 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -49,9 +45,8 @@ import butterknife.Unbinder;
  */
 public class ArticleDetailFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TAG = "ArticleDetailFragment";
-
     public static final String ARG_ITEM_ID = "item_id";
+    private static final String TAG = "ArticleDetailFragment";
     @BindView(R.id.thumbnail)
     ImageView mPhotoView;
     @BindView(R.id.article_title)
@@ -76,10 +71,6 @@ public class ArticleDetailFragment extends Fragment implements
     private Cursor mCursor;
     private long mItemId;
     private View mRootView;
-    private int mMutedColor = 0xFF333333;
-    private ColorDrawable mStatusBarColorDrawable;
-    private View mPhotoContainerView;
-
 
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
@@ -101,6 +92,20 @@ public class ArticleDetailFragment extends Fragment implements
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         fragment.setArguments(arguments);
         return fragment;
+    }
+
+    static float progress(float v, float min, float max) {
+        return constrain((v - min) / (max - min), 0, 1);
+    }
+
+    static float constrain(float val, float min, float max) {
+        if (val < min) {
+            return min;
+        } else if (val > max) {
+            return max;
+        } else {
+            return val;
+        }
     }
 
     @Override
@@ -159,8 +164,8 @@ public class ArticleDetailFragment extends Fragment implements
             @Override
             public void onClick(View view) {
                 startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
-                        //   .setType(getString(R.string.text_type))
-                        // .setText(getString(R.string.share_set_text))
+                        .setType("text/plain")
+                        .setText(getString(R.string.default_text))
                         .getIntent(), getString(R.string.action_share)));
             }
         });
@@ -169,21 +174,6 @@ public class ArticleDetailFragment extends Fragment implements
 
 
         return mRootView;
-    }
-
-
-    static float progress(float v, float min, float max) {
-        return constrain((v - min) / (max - min), 0, 1);
-    }
-
-    static float constrain(float val, float min, float max) {
-        if (val < min) {
-            return min;
-        } else if (val > max) {
-            return max;
-        } else {
-            return val;
-        }
     }
 
     private Date parsePublishedDate() {
@@ -202,9 +192,9 @@ public class ArticleDetailFragment extends Fragment implements
             return;
         }
 
-    if (bylineView!=null) {
-        bylineView.setMovementMethod(new LinkMovementMethod());
-    }
+        if (bylineView != null) {
+            bylineView.setMovementMethod(new LinkMovementMethod());
+        }
 
 
         if (mCursor != null) {
@@ -246,7 +236,7 @@ public class ArticleDetailFragment extends Fragment implements
                 titleView.setText(getResources().getString(R.string.not_applicable));
                 bylineView.setText(getResources().getString(R.string.not_applicable));
                 bodyView.setText(getResources().getString(R.string.not_applicable));
-            }catch(Exception e){
+            } catch (Exception e) {
                 //
             }
         }

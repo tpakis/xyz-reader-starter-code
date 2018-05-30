@@ -22,7 +22,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,17 +35,13 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     // Use default locale format
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
     // Most time functions can only handle 1902 - 2037
-    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
     private Cursor mCursor;
     private Context context;
 
     public ArticlesListAdapter(ArticlesListAdapterOnClickHandler handler, Context context) {
         mClickHandler = handler;
         this.context = context;
-    }
-
-    public interface ArticlesListAdapterOnClickHandler {
-        void onClick(long itemID);
     }
 
     public void setArticlesListToShow(Cursor cursor) {
@@ -62,7 +57,6 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         return new ResultsHolder(itemView);
     }
 
-
     private Date parsePublishedDate() {
         try {
             String date = mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE);
@@ -73,6 +67,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
             return new Date();
         }
     }
+
     @Override
     public void onBindViewHolder(ResultsHolder holder, int position) {
         mCursor.moveToPosition(position);
@@ -110,6 +105,10 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         return mCursor.getCount();
     }
 
+    public interface ArticlesListAdapterOnClickHandler {
+        void onClick(long itemID);
+    }
+
     public class ResultsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.thumbnail)
@@ -129,7 +128,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         public void onClick(View v) {
             int positionClicked = getAdapterPosition();
             mCursor.moveToPosition(positionClicked);
-            mClickHandler.onClick( mCursor.getLong(ArticleLoader.Query._ID));
+            mClickHandler.onClick(mCursor.getLong(ArticleLoader.Query._ID));
         }
     }
 }
