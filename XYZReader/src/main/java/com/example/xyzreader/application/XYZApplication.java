@@ -11,7 +11,6 @@ public class XYZApplication extends Application {
 
     public void onCreate() {
         super.onCreate();
-
         mApplication = this;
         XYZApplication.context = getApplicationContext();
         initializeStetho();
